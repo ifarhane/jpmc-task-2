@@ -262,7 +262,10 @@ class App(object):
         self._data_1 = order_book(read_csv(), self._book_1, 'ABC')
         self._data_2 = order_book(read_csv(), self._book_2, 'DEF')
         self._rt_start = datetime.now()
-        self._sim_start, _, _ = next(self._data_1)
+        try:
+            self._sim_start, _, _ = next(self._data_2)
+        except StopIteration:
+            raise ValueError("The data structure used by the iterator is empty.")
         self.read_10_first_lines()
 
     @property
@@ -336,7 +339,9 @@ class App(object):
 # Main
 
 if __name__ == '__main__':
-    if not os.path.isfile('test.csv'):
+    file_path = os.path.join(r'C:\Users\Ibrahim\Documents\jpmc_task1\jpmc-task-2', 'test.csv')
+    if not os.path.isfile(file_path):
         print("No data found, generating...")
         generate_csv()
-    run(App())
+    else:
+        run(App())
